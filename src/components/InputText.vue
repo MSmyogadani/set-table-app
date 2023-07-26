@@ -16,7 +16,7 @@
 </script>
 
 <template>
-    <div class="table_number input-group input-group-ig">
+    <div class="table_number input-group input-group-lg">
         <span class="input-group-text fs-3 fw-bold">{{ props.tableNumber['number'] }}</span>
         <input
             type="number"

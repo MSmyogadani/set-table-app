@@ -39,11 +39,13 @@
 
   // テーブル決め
   function setTable() {
+    if (sumTable.value === 0 || !tableList.value.length) {
+      return false;
+    }
     const endTable = tableList.value.filter(table => table.seatCount === 0).map(table => table.number)
-    
     while (true) {
-      if (endTable.length === sumTable) {
-        break
+      if (endTable.length === sumTable.value) {
+        break;
       }
       const random = Math.floor(Math.random() * sumTable.value) + 1
       if (!endTable.includes(random)) {
@@ -56,8 +58,7 @@
             })
           }
         })
-        console.log(JSON.stringify(tableList))
-        break
+        break;
       }
     }
   }
@@ -70,15 +71,17 @@
 <template>
   <div class="container-fluid w-75 mx-auto text-center">
       <div class="top mt-5 text-center">
-        <div class="d-flex justify-content-start mb-3 position-relative">
-          <div class="d-flex d-grid gap-3">
+        <div class="d-lg-flex justify-content-start mb-3 top-item-block">
+          <div class="d-flex justify-content-center d-grid gap-3">
             <Button :btnName="btnTableAdd" @clickEvent="addTable"/>
             <Button :btnName="btnTableDel" @clickEvent="delTable"/>
           </div>
-          <h1 class="text-secondary position-absolute top-50 start-50 translate-middle">残り席数</h1>
+          <div class="open-seats">
+            <h1 class="text-secondary">残り席数</h1>
+          </div>
         </div>
-        <div class="row">
-          <div class="col-2 my-3" v-for="table in tableList">
+        <div class="row overflow-auto" style="height: 250px;">
+          <div class="col-lg-2 col-6 my-3" v-for="table in tableList">
             <Input :tableNumber="table" @inputEvent="setSeatCount($event)" />
           </div>
         </div>
@@ -95,5 +98,20 @@
 </template>
 
 <style scoped>
-
+  @media (min-width: 768px) {
+    .top-item-block {
+      position: relative;
+    }
+    .open-seats {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+  }
+  @media (max-width: 767px) {
+    .open-seats {
+      margin-top: 10px;
+    }
+  }
 </style>

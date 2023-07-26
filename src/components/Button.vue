@@ -7,7 +7,7 @@
 <template>
     <button
         type="button"
-        class="btn btn-lg btn-info text-white shadow-none"
+        class="btn btn-md btn-info text-white shadow-none"
         @click="$emit('clickEvent')"
     >{{ props.btnName }}
     </button>
