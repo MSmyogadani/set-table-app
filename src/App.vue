@@ -7,6 +7,8 @@
   const tableCount = ref(0)
   const randomTableNum = ref()
   const isShowTable = ref(true)
+  const random = ref()
+  const isShowRoulette = ref(false)
 
   function setLocalStrage() {
     localStorage.setItem('tableList', JSON.stringify(tableList.value))
@@ -54,30 +56,39 @@
 
   // テーブル決め
   function setTable() {
-    if (tableCount.value === 0 || !tableList.value.length) {
-      return false;
-    }
-    const endTable = tableList.value.filter(table => table.seatCount === 0).map(table => table.number)
-    while (true) {
-      if (endTable.length === tableCount.value) {
-        break
+    if (!isShowRoulette.value) {
+      if (tableCount.value === 0 || !tableList.value.length) {
+        return false;
       }
-      const random = Math.floor(Math.random() * tableCount.value) + 1
-      
-      if (!endTable.includes(random)) {
-        randomTableNum.value = random
+      const hasSeatTable = tableList.value.filter(table => table.seatCount !== 0).map(table => table.number)
+      const endTable = tableList.value.filter(table => table.seatCount === 0).map(table => table.number)
+
+      if (endTable.length === tableCount.value) {
+        return false
+      }
+      const random = Math.floor(Math.random() * hasSeatTable.length)
+      randomTableNum.value = hasSeatTable[random]
+
+      const intervalId = setInterval(roulette, 50)
+      isShowRoulette.value = true
+      setTimeout(() => {
+        isShowRoulette.value = false
+        clearInterval(intervalId)
         tableList.value.find((table, index) => {
-          if (table.number === random) {
+          if (table.number === hasSeatTable[random]) {
             tableList.value.splice(index, 1, {
               number: table.number,
               seatCount: --table.seatCount
             })
           }
         })
-        break
-      }
+        setLocalStrage()
+      }, 1000)
     }
-    setLocalStrage()
+  }
+
+  function roulette() {
+    random.value = Math.floor(Math.random() * tableCount.value) + 1
   }
 
   const btnTableAdd = 'テーブルを追加'
@@ -117,7 +128,10 @@
       <div class="main">
         <span class="h5 text-secondary">あなたのテーブル</span>
         <div class="shadow p-3 mt-2 mb-3 bg-body rounded m-auto d-flex flex-column justify-content-center align-items-center" style="width: 200px; height: 200px;">
-          <h1 class="text-secondary fw-bold" style="transform: scale(3)">{{ randomTableNum }}</h1>
+          <h1 class="text-secondary fw-bold" style="transform: scale(3)">
+            <template v-if="isShowRoulette">{{ random }}</template>
+            <template v-else>{{ randomTableNum }}</template>
+          </h1>
         </div>
         <Button :btnName="btnRandomTableNum" @clickEvent="setTable" />
       </div>
