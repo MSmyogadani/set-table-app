@@ -7,9 +7,9 @@
 <template>
     <button
         type="button"
-        class="btn btn-sm p-2 btn-info text-white shadow-none"
+        class="btn btn-sm p-2 btn-white border-info text-info shadow-none"
         @click="$emit('clickEvent')"
-    >{{ props.btnName }}
+    >{{ props.btnName }}<slot></slot>
     </button>
 </template>
 

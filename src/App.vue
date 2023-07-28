@@ -74,9 +74,6 @@
             })
           }
         })
-        setTimeout(() => {
-          randomTableNum.value = ''
-        },10000)
         break
       }
     }
@@ -93,11 +90,8 @@
       <div class="top mt-5 text-center">
         <div class="d-md-flex d-grid gap-2 justify-content-center justify-content-lg-between mb-3 top-item-block">
           <div class="d-flex order-1 order-lg-1 justify-content-center d-grid gap-3">
-            <Button :btnName="btnTableAdd" @clickEvent="addTable"/>
-            <Button :btnName="btnTableDel" @clickEvent="delTable"/>
-          </div>
-          <div class="open-seats order-3 order-lg-2">
-            <h1 class="text-secondary">残り席数</h1>
+            <Button :btnName="btnTableAdd" @clickEvent="addTable"><i class="bi bi-plus-circle-fill ms-2"></i></Button>
+            <Button :btnName="btnTableDel" @clickEvent="delTable"><i class="bi bi-dash-circle-fill ms-2"></i></Button>
           </div>
           <div class="form-check form-switch d-flex align-items-center p-0 order-2 order-lg-3">
             <input
@@ -131,17 +125,6 @@
 </template>
 
 <style scoped>
-  @media (min-width: 768px) {
-    .top-item-block {
-      position: relative;
-    }
-    .open-seats {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-    }
-  }
   @media (max-width: 767px) {
     .open-seats {
       margin-top: 10px;
